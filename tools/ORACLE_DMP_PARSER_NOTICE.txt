@@ -1,0 +1,5 @@
+Third-party component: oracledmpparser 0.0.8
+Maven coordinates: com.jansen-systems.oss:oracledmpparser:0.0.8
+Project: https://github.com/supermaz/oracledmpparser
+License: Apache License 2.0 (as identified in the published Maven POM)
+The accompanying JAR is used only by tools/convert_oracle_stock_dump.py to read the legacy Oracle exp dump format.

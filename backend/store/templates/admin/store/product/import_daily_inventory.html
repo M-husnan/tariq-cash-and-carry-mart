@@ -1,0 +1,29 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<div id="content-main">
+  <p>Upload the store software's inventory export as a UTF-8 CSV. The importer matches products by item code, updates retail rates and quantities for the selected branch, creates missing categories, and keeps existing product photos.</p>
+  <p>Accepted column names include <code>ITEMCODE</code>, <code>ITEMNAME</code>, <code>QTY</code>, <code>RATE</code>, <code>PSIZE</code>, <code>MNF</code>, <code>CATAGRY</code>, and <code>BARCODE</code>. <code>RATE</code> is treated as the selling price; purchase-rate fields such as <code>PRATE</code> are ignored. The CSV needs item code, item name, quantity, and selling price. Oracle <code>.DMP</code> files cannot be uploaded here directly.</p>
+  <p><a href="{% url 'admin:store_product_daily_inventory_template' %}">Download a blank CSV template</a></p>
+  <form method="post" enctype="multipart/form-data" class="aligned">
+    {% csrf_token %}
+    <div class="form-row">
+      <label for="id_branch">Store branch</label>
+      <select id="id_branch" name="branch" required>
+        {% for branch in branches %}<option value="{{ branch.pk }}">{{ branch.name }} — {{ branch.city }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="form-row">
+      <label for="id_inventory_file">Inventory CSV</label>
+      <input id="id_inventory_file" type="file" name="inventory_file" accept=".csv,text/csv" required>
+    </div>
+    <div class="form-row">
+      <label for="id_full_snapshot">Full daily snapshot</label>
+      <input id="id_full_snapshot" type="checkbox" name="full_snapshot">
+      <p class="help">Select only when this CSV contains every item at the selected branch. Items absent from a full snapshot will be set to zero stock there.</p>
+    </div>
+    <div class="submit-row"><input type="submit" value="Update inventory" class="default"></div>
+  </form>
+  <p><a href="{% url 'admin:store_product_changelist' %}">Back to products</a></p>
+</div>
+{% endblock %}
